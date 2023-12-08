@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
 import { angularMaterialRenderers } from '@jsonforms/angular-material';
-import { and, createAjv, isControl, optionIs, rankWith, schemaTypeIs, scopeEndsWith, Tester } from '@jsonforms/core';
+import { and, createAjv, isControl, optionIs, rankWith, schemaTypeIs, scopeEndsWith, setSchema, Tester } from '@jsonforms/core';
 import { CustomAutocompleteControlRenderer } from './custom.autocomplete';
 import { DataDisplayComponent } from './data.control';
 import { LangComponent } from './lang.control';
-import uischemaAsset from '../assets/uischema.json';
-import schemaAsset from '../assets/schema.json';
+import uischemaAsset from '../assets/afsim_event_uischema.json';
+import schemaAsset from '../assets/afsim_event_schema.json';
 import dataAsset from './data';
 import { parsePhoneNumber } from 'libphonenumber-js';
 import { DateAdapter } from '@angular/material/core';
+import $RefParser from "@apidevtools/json-schema-ref-parser";
 
 const departmentTester: Tester = and(
   schemaTypeIs('string'),
@@ -54,7 +55,17 @@ export class AppComponent {
     schemaId: 'id',
     allErrors: true
   });
+  refParserOptions = {
+    dereference: {
+      circular: false
+    }
+  }
+
   constructor(dateAdapter: DateAdapter<Date>) {
+    let parser = new $RefParser();
+    parser.bundle('../assets/afsim_event_schema.json');
+    console.log(parser.schema);
+    // $RefParser.dereference(this.schema, this.refParserOptions).then(res => setSchema(res.$schema));
     this.ajv.addFormat('time', '^([0-1][0-9]|2[0-3]):[0-5][0-9]$');
     this.dateAdapter = dateAdapter;
     dateAdapter.setLocale(this.i18n.locale);

@@ -31,7 +31,12 @@
             "sourceMap": true,
             "optimization": false,
             "namedChunks": true,
-            "allowedCommonJsDependencies": ["lodash"]
+            "allowedCommonJsDependencies": [
+              "lodash",
+              "@apidevtools/json-schema-ref-parser",
+              "ajv",
+              "ajv-formats"
+            ]
           },
           "configurations": {
             "production": {
