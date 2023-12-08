@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "AFSIM Event",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "format": "uuid"
+    },
+    "name": {
+      "type": "string",
+      "description": "Optional event name"
+    },
+    "actor": {
+      "type": "string",
+      "description": "The platform to perform the event"
+    },
+    "eventTimeSeconds": {
+      "type": "number",
+      "description": "Start time for the event, in seconds relative to the scenario. Optional if triggered by another event. TODO - Collapse eventTimeSeconds and hooks into a single 'activatedBy' field for more flexibility in how an event activation is defined.",
+      "minimum": 0
+    },
+    "type": {
+      "anyOf": [
+        { "$ref": "event_types/afsim/nmc_event_schema.json","description": "NMC" },
+        { "$ref": "event_types/afsim/lambert_intercept_event_schema.json", "description": "Lambert Intercept" },
+        { "$ref": "event_types/afsim/drift_event_schema.json", "description": "Drift" },
+        { "$ref": "event_types/afsim/legacy_collect_event_schema.json", "description": "Legacy Collect" }
+      ]
+    }
+  }
+}
